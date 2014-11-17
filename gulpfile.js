@@ -12,7 +12,9 @@ var gulp       = require('gulp')
   , coffee     = require('gulp-coffee')
   , sourcemaps = require('gulp-sourcemaps')
   , express    = require('express')
-  , path       = require('path')
+  , path       = require('path');
+
+var api = require('./api/api');
 
 // Configuration
 // -------------
@@ -80,6 +82,9 @@ function dir(root, folder) {
 gulp.task('server', function() {
   return express()
     .use(express.static(path.resolve(dir('source'))))
+    .use(function(req, res, next){
+      api(req, res, next);
+    })
     .listen(Config.port);
 });
 
